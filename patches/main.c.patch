@@ -1,0 +1,60 @@
+--- w3m/main.c	2010-08-24 12:11:51.000000000 +0200
++++ /home/alex/repos/w3m/main.c	2019-03-22 01:57:34.439626923 +0100
+@@ -817,7 +817,7 @@
+ #ifdef USE_M17N
+     wtf_init(DocumentCharset, DisplayCharset);
+     /*  if (w3m_dump)
+-     *    WcOption.pre_conv = WC_TRUE; 
++     *    WcOption.pre_conv = WC_TRUE;
+      */
+ #endif
+ 
+@@ -833,7 +833,8 @@
+     mySignal(SIGPIPE, SigPipe);
+ #endif
+ 
+-    orig_GC_warn_proc = GC_set_warn_proc(wrap_GC_warn_proc);
++    orig_GC_warn_proc = GC_get_warn_proc();
++    GC_set_warn_proc(wrap_GC_warn_proc);
+     err_msg = Strnew();
+     if (load_argc == 0) {
+ 	/* no URL specified */
+@@ -1485,7 +1486,7 @@
+ }
+ #endif
+ 
+-/* 
++/*
+  * Command functions: These functions are called with a keystroke.
+  */
+ 
+@@ -2250,9 +2251,9 @@
+ }
+ 
+ /* movLW, movRW */
+-/* 
++/*
+  * From: Takashi Nishimoto <g96p0935@mse.waseda.ac.jp> Date: Mon, 14 Jun
+- * 1999 09:29:56 +0900 
++ * 1999 09:29:56 +0900
+  */
+ #if defined(USE_M17N) && defined(USE_UNICODE)
+ #define nextChar(s, l)	do { (s)++; } while ((s) < (l)->len && (l)->propBuf[s] & PC_WCHAR2)
+@@ -2269,7 +2270,7 @@
+ {
+     return wc_is_ucs_alnum(c);
+ }
+-#else 
++#else
+ #define nextChar(s, l)	(s)++
+ #define prevChar(s, l)	(s)--
+ #define getChar(p)	((int)*(p))
+@@ -2940,7 +2941,7 @@
+ 	return 1;
+     }
+ #endif
+-	
++
+     /* invoke external mailer */
+     if (MailtoOptions == MAILTO_OPTIONS_USE_MAILTO_URL) {
+ 	to = Strnew_charp(html_unquote(url));

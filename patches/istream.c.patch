@@ -1,0 +1,38 @@
+--- w3m/istream.c	2010-07-18 15:43:23.000000000 +0200
++++ ../repos/w3m/istream.c	2019-03-22 01:53:53.366763529 +0100
+@@ -22,8 +22,8 @@
+ static void basic_close(int *handle);
+ static int basic_read(int *handle, char *buf, int len);
+ 
+-static void file_close(struct file_handle *handle);
+-static int file_read(struct file_handle *handle, char *buf, int len);
++static void file_close(struct internal_file_handle *handle);
++static int file_read(struct internal_file_handle *handle, char *buf, int len);
+ 
+ static int str_read(Str handle, char *buf, int len);
+ 
+@@ -114,7 +114,7 @@
+     stream = New(union input_stream);
+     init_base_stream(&stream->base, STREAM_BUF_SIZE);
+     stream->file.type = IST_FILE;
+-    stream->file.handle = New(struct file_handle);
++    stream->file.handle = New(struct internal_file_handle);
+     stream->file.handle->f = f;
+     if (closep)
+ 	stream->file.handle->close = closep;
+@@ -658,13 +658,13 @@
+ }
+ 
+ static void
+-file_close(struct file_handle *handle)
++file_close(struct internal_file_handle *handle)
+ {
+     handle->close(handle->f);
+ }
+ 
+ static int
+-file_read(struct file_handle *handle, char *buf, int len)
++file_read(struct internal_file_handle *handle, char *buf, int len)
+ {
+     return fread(buf, 1, len, handle->f);
+ }

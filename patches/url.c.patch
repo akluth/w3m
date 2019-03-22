@@ -1,0 +1,74 @@
+--- w3m/url.c	2010-12-15 11:50:24.000000000 +0100
++++ /home/alex/repos/w3m/url.c	2019-03-22 02:17:32.206547848 +0100
+@@ -268,10 +268,10 @@
+     if (RAND_status())
+ 	return;
+     if ((file = RAND_file_name(buffer, sizeof(buffer)))) {
+-#ifdef USE_EGD
+-	if (RAND_egd(file) > 0)
+-	    return;
+-#endif
++//#ifdef USE_EGD
++//	if (RAND_egd(file) > 0)
++//	    return;
++//#endif
+ 	RAND_load_file(file, -1);
+     }
+     if (RAND_status())
+@@ -839,7 +839,7 @@
+ 	p_url->host != NULL && *p_url->host != '\0' &&
+ 	strcmp(p_url->host, "localhost")) {
+ 	/*
+-	 * In the environments other than CYGWIN, a URL like 
++	 * In the environments other than CYGWIN, a URL like
+ 	 * file://host/file is regarded as ftp://host/file.
+ 	 * On the other hand, file://host/file on CYGWIN is
+ 	 * regarded as local access to the file //host/file.
+@@ -907,14 +907,14 @@
+ 	while (*p && *p != '#' && p != cgi)
+ 	    p++;
+ 	if (*p == '#' && p_url->scheme == SCM_LOCAL) {
+-	    /* 
++	    /*
+ 	     * According to RFC2396, # means the beginning of
+ 	     * URI-reference, and # should be escaped.  But,
+ 	     * if the scheme is SCM_LOCAL, the special
+ 	     * treatment will apply to # for convinience.
+ 	     */
+ 	    if (p > q && *(p - 1) == '/' && (cgi == NULL || p < cgi)) {
+-		/* 
++		/*
+ 		 * # comes as the first character of the file name
+ 		 * that means, # is not a label but a part of the file
+ 		 * name.
+@@ -923,7 +923,7 @@
+ 		goto again;
+ 	    }
+ 	    else if (*(p + 1) == '\0') {
+-		/* 
++		/*
+ 		 * # comes as the last character of the file name that
+ 		 * means, # is not a label but a part of the file
+ 		 * name.
+@@ -1120,10 +1120,10 @@
+ 	    ) {
+ 	    if (relative_uri) {
+ 		/* In this case, pu->file is created by [process 1] above.
+-		 * pu->file may contain relative path (for example, 
++		 * pu->file may contain relative path (for example,
+ 		 * "/foo/../bar/./baz.html"), cleanupName() must be applied.
+ 		 * When the entire abs_path is given, it still may contain
+-		 * elements like `//', `..' or `.' in the pu->file. It is 
++		 * elements like `//', `..' or `.' in the pu->file. It is
+ 		 * server's responsibility to canonicalize such path.
+ 		 */
+ 		pu->file = cleanupName(pu->file);
+@@ -1943,7 +1943,7 @@
+     if (!NOproxy_netaddr) {
+ 	return 0;
+     }
+-    /* 
++    /*
+      * to check noproxy by network addr
+      */
+     if (SETJMP(AbortLoading) != 0) {
